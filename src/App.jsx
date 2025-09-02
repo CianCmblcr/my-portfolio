@@ -5,12 +5,12 @@ import myPicture from './assets/profile pic me.jpg';
 
 function  App () {
   return (
-    <div className="min-h-screen bg-[#2F4F4F] text-gray-50">
+    <div className="min-h-screen bg-[#2F4F4F] text-gray-50 flex flex-col">
       <Navbar />
 
       {/* Home Section */}
        <section id="home" className="h-screen bg-[#171717] flex items-center justify-center flex-col">
-        <div className="px-[16px] w-full text-center">
+        <div className="px-[16px] w-full text-center flex flex-col">
           <h1 className="text-[15rem] custom-satoshi fade-in-up-animation">Cian Combalicer</h1>
           <h2 className="text-4xl custom-satoshi fade-in-up-animation mb-4">UX/UI Designer | Front End Developer</h2>
           <p className="text-l custom-satoshi font-light fade-in-up-animation mb-4">Figma•Photoshop•Illustrator</p>
@@ -20,12 +20,24 @@ function  App () {
 
       {/* About Section */}
       <section id="about" className="h-screen bg-[#171717] flex items-center justify-center">
-        <AnimatedSection animationClass="fade-in-up-animation">
-          <h1 className="text-4xl font-bold">About Me</h1>
-          <img src="myPicture" alt="myPicture"
-           />
-        </AnimatedSection> 
-      </section>
+  <AnimatedSection animationClass="fade-in-up-animation">
+    <div className="flex flex-col md:flex-row items-center justify-center h-full px-4 md:px-16 space-y-8 md:space-y-0 md:space-x-16 max-w-7xl">
+      <div className="flex-1 flex items-center justify-center h-full">
+        <img
+          src={myPicture}
+          alt="Cian Combalicer"
+          className="w-full h-full object-cover shadow-lg"
+        />
+      </div>
+      <div className="flex-1 text-center md:text-left">
+        <h1 className="text-4xl font-bold mb-4">About Me</h1>
+        <p className="text-lg font-light leading-relaxed max-w-2xl mx-auto md:mx-0">
+          Hello! My name is Cian Combalicer, and I'm a passionate UX/UI Designer and Front-End Developer based in Metro Manila, Philippines. I specialize in creating intuitive and visually appealing digital experiences. My work is a blend of creative design, leveraging tools like Figma, Photoshop, and Illustrator, and technical development using HTML, CSS, JavaScript, and React. I love bringing ideas to life, from the initial concept to a fully functional and polished product. Let's build something great together!
+        </p>
+      </div>
+    </div>
+  </AnimatedSection>
+</section>
 
       {/* Projects Section */}
       <section id="projects" className="h-screen bg-[#171717] flex items-center justify-center">
