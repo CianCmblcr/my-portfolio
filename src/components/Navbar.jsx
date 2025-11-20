@@ -5,7 +5,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className='bg-[#171717] p-4 fixed w-full z-10 top-0'>
+    <nav className='bg-[#16171B] p-4 fixed w-full z-10 top-0'>
       <div className="container mx-auto flex items-center justify-between">
         <a href="#home" className="flex items-center space-x-2">
           <img src={logo} alt="My Portfolio Logo" className="h-8 w-auto" />
