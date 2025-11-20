@@ -1,44 +1,69 @@
-import React, { useState } from 'react';
-import logo from '../assets/Frame 3.png';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import logo from "../assets/Frame 3.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleScroll = (section) => {
+    if (window.location.pathname !== "/") {
+      // Navigate back to homepage FIRST
+      navigate("/");
+
+      // Give React Router a tiny delay to mount App.jsx
+      setTimeout(() => {
+        const target = document.getElementById(section);
+        target?.scrollIntoView({ behavior: "smooth" });
+      }, 150);
+    } else {
+      // Already on homepage → scroll instantly
+      const target = document.getElementById(section);
+      target?.scrollIntoView({ behavior: "smooth" });
+    }
+
+    setIsOpen(false); // close mobile menu
+  };
 
   return (
-    <nav className='bg-[#16171B] p-4 fixed w-full z-10 top-0'>
+    <nav className="bg-[#16171B] p-4 fixed w-full z-50 top-0">
       <div className="container mx-auto flex items-center justify-between">
-        <a href="#home" className="flex items-center space-x-2">
-          <img src={logo} alt="My Portfolio Logo" className="h-8 w-auto" />
+        
+        {/* Logo */}
+        <button
+          onClick={() => handleScroll("home")}
+          className="flex items-center space-x-2 cursor-pointer"
+        >
+          <img src={logo} className="h-8 w-auto" />
           <span className="text-white text-xl font-bold">Cian Combalicer</span>
-        </a>
+        </button>
 
-        {/* Hamburger menu button */}
-        <div className="md:hidden">
-          <button onClick={() => setIsOpen(!isOpen)} className="text-gray-300 hover:text-white focus:outline-none focus:text-white">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-            </svg>
-          </button>
-        </div>
+        {/* Mobile Menu */}
+        <button
+          className="md:hidden text-gray-300 hover:text-white"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          <i className="fa-solid fa-bars text-xl"></i>
+        </button>
 
-        {/* Desktop menu links */}
-        <ul className="hidden md:flex space-x-10">
-          <li><a href="#home" className="text-gray-300 hover:text-white custom-inter">Home</a></li>
-          <li><a href="#about" className="text-gray-300 hover:text-white custom-inter">About</a></li>
-          <li><a href="#projects" className="text-gray-300 hover:text-white custom-inter">Projects</a></li>
-          <li><a href="#contact" className="text-gray-300 hover:text-white custom-inter">Contact</a></li>
+        {/* Desktop Links */}
+        <ul className="hidden md:flex space-x-10 text-gray-300 text-lg">
+          <li><button className="hover:text-white" onClick={() => handleScroll("home")}>Home</button></li>
+          <li><button className="hover:text-white" onClick={() => handleScroll("about")}>About</button></li>
+          <li><button className="hover:text-white" onClick={() => handleScroll("projects")}>Projects</button></li>
+          <li><button className="hover:text-white" onClick={() => handleScroll("contact")}>Contact</button></li>
         </ul>
       </div>
 
-      {/* Mobile menu links (visible when isOpen is true) */}
-      <div className={`md:hidden ${isOpen ? 'block' : 'hidden'}`}>
-        <ul className="flex flex-col items-center mt-4 space-y-4">
-          <li><a href="#home" onClick={() => setIsOpen(false)} className="text-gray-300 hover:text-white custom-inter block px-3 py-2">Home</a></li>
-          <li><a href="#about" onClick={() => setIsOpen(false)} className="text-gray-300 hover:text-white custom-inter block px-3 py-2">About</a></li>
-          <li><a href="#projects" onClick={() => setIsOpen(false)} className="text-gray-300 hover:text-white custom-inter block px-3 py-2">Projects</a></li>
-          <li><a href="#contact" onClick={() => setIsOpen(false)} className="text-gray-300 hover:text-white custom-inter block px-3 py-2">Contact</a></li>
+      {/* Mobile Dropdown */}
+      {isOpen && (
+        <ul className="md:hidden mt-4 flex flex-col items-center space-y-4 text-lg text-gray-300">
+          <li><button onClick={() => handleScroll("home")} className="hover:text-white">Home</button></li>
+          <li><button onClick={() => handleScroll("about")} className="hover:text-white">About</button></li>
+          <li><button onClick={() => handleScroll("projects")} className="hover:text-white">Projects</button></li>
+          <li><button onClick={() => handleScroll("contact")} className="hover:text-white">Contact</button></li>
         </ul>
-      </div>
+      )}
     </nav>
   );
 };
