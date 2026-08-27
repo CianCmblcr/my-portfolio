@@ -1,5 +1,5 @@
 import React from "react";
-import Navbar from "../components/Navbar";
+import SideNav from "../components/SideNav";
 import AnimatedSection from "../components/AnimatedSection";
 import {
   spotifyCover,
@@ -13,11 +13,11 @@ import {
 
 const Spotify = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#16171B] via-[#2C2F35] to-[#3A3F46] text-gray-50">
-      <Navbar />
+    <div className="min-h-screen bg-gradient-to-b from-[var(--color-page-from)] via-[var(--color-page-via)] to-[var(--color-page-to)] text-[var(--color-text-primary)]">
+      <SideNav />
 
       {/* HERO */}
-      <section className="pt-32 pb-20 px-6 text-center max-w-5xl mx-auto">
+      <section className="pt-20 pb-20 px-6 text-center max-w-5xl mx-auto">
         <img
           src={spotifyCover}
           alt="Spotify Reimagined Cover"
@@ -91,7 +91,7 @@ const Spotify = () => {
 
           <a
             href="/#projects"
-            className="mt-10 inline-block px-6 py-3 bg-white text-black rounded-3xl shadow hover:bg-gray-300 transition font-bold"
+            className="mt-10 inline-block px-6 py-3 bg-[var(--color-invert-surface)] text-[var(--color-invert-text)] rounded-3xl shadow hover:bg-[var(--color-accent)] transition font-bold"
           >
             Back to Projects
           </a>
