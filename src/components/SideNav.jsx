@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { FaArrowRight, FaBehance, FaChevronRight, FaLinkedinIn, FaXmark, FaXTwitter } from "react-icons/fa6";
 import logo from "../assets/Frame 3.png";
 import ThemeToggle from "./ThemeToggle";
@@ -7,13 +7,34 @@ import ThemeToggle from "./ThemeToggle";
 const NAV_ITEMS = [
   { id: "home", index: "01", label: "Home" },
   { id: "about", index: "02", label: "About" },
-  { id: "projects", index: "03", label: "Projects" },
-  { id: "contact", index: "04", label: "Let's connect" },
+  { id: "services", index: "03", label: "Services" },
+  { id: "projects", index: "04", label: "Projects" },
+  { id: "contact", index: "05", label: "Let's connect" },
 ];
 
 const SideNav = () => {
   const [open, setOpen] = useState(false);
+  const [current, setCurrent] = useState("home");
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+
+  // Tracks which section crosses the middle of the viewport.
+  useEffect(() => {
+    if (pathname !== "/") return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setCurrent(entry.target.id);
+        });
+      },
+      { rootMargin: "-45% 0px -45% 0px" }
+    );
+    NAV_ITEMS.forEach(({ id }) => {
+      const section = document.getElementById(id);
+      if (section) observer.observe(section);
+    });
+    return () => observer.disconnect();
+  }, [pathname]);
 
   useEffect(() => {
     const onKeyDown = (event) => {
@@ -89,7 +110,8 @@ const SideNav = () => {
               <button
                 key={item.id}
                 type="button"
-                className="sidenav-link"
+                className={`sidenav-link ${pathname === "/" && current === item.id ? "is-active" : ""}`}
+                aria-current={pathname === "/" && current === item.id ? "location" : undefined}
                 onClick={() => handleScroll(item.id)}
                 tabIndex={open ? 0 : -1}
               >

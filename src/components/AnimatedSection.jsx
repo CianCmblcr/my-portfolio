@@ -1,43 +1,38 @@
-import React, { useRef, useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from "react";
 
-const AnimatedSection = ({ children, animationClass }) => {
+// Reveals its children once they scroll into view. `group` skips the
+// wrapper's own fade so `.stagger-item` children can animate one by one.
+const AnimatedSection = ({ children, delay = 0, group = false, className = "", as = "div" }) => {
+  const Tag = as;
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef(null);
 
   useEffect(() => {
+    const node = sectionRef.current;
+    if (!node) return;
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
+          observer.disconnect();
         }
       },
-      {
-        root: null, // viewport
-        rootMargin: '0px',
-        threshold: 0.5, // Trigger when 50% of the element is visible
-      }
+      { rootMargin: "0px 0px -10% 0px", threshold: 0.15 }
     );
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
-      }
-    };
+    observer.observe(node);
+    return () => observer.disconnect();
   }, []);
 
   return (
-    <div
+    <Tag
       ref={sectionRef}
-      className={`transition-opacity duration-1000 ${
-        isVisible ? animationClass : 'opacity-0'
-      }`}
+      className={`${group ? "" : "reveal"} ${isVisible ? "is-visible" : ""} ${className}`}
+      style={delay ? { "--delay": `${delay}ms` } : undefined}
     >
       {children}
-    </div>
+    </Tag>
   );
 };
 
