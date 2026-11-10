@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { FaCheck, FaRegCopy } from "react-icons/fa6";
 
-const CopyEmail = ({ email }) => {
+const CopyEmail = ({ email, className = "btn btn--sage" }) => {
   const [copied, setCopied] = useState(false);
   const timeoutRef = useRef(0);
 
@@ -20,12 +20,9 @@ const CopyEmail = ({ email }) => {
   };
 
   return (
-    <button type="button" className="copy-email" onClick={copy} aria-label={`Copy ${email}`}>
-      <span>{email}</span>
-      <span className="copy-email-icon" aria-hidden="true">
-        <FaRegCopy className={copied ? "is-off" : ""} />
-        <FaCheck className={copied ? "" : "is-off"} />
-      </span>
+    <button type="button" className={className} onClick={copy} aria-label={`Copy ${email}`}>
+      <span>{copied ? "Copied to clipboard" : email}</span>
+      {copied ? <FaCheck aria-hidden="true" /> : <FaRegCopy aria-hidden="true" />}
       <span className="sr-only" aria-live="polite">{copied ? "Copied" : ""}</span>
     </button>
   );

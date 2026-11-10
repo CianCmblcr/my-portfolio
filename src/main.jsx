@@ -1,25 +1,36 @@
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
+import { StrictMode, Suspense, lazy } from "react";
+import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import App from './App.jsx';
-import Spotify from './projects/Spotify.jsx';
-import GlowNest from './projects/GlowNest.jsx';
-import LifeLane from "./projects/LifeLane";
+import App from "./App.jsx";
+import ProjectPage from "./pages/ProjectPage.jsx";
+import NotFound from "./pages/NotFound.jsx";
 import GlobalEffects from "./components/GlobalEffects";
-import './index.css';
-import './motion.css';
+import { ContentProvider } from "./content/ContentProvider";
+import "./index.css";
+import "./motion.css";
 
-createRoot(document.getElementById('root')).render(
+const AdminPage = lazy(() => import("./admin/AdminPage.jsx"));
+
+createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route element={<GlobalEffects />}>
-          <Route path="/" element={<App />} />
-          <Route path="/projects/spotify" element={<Spotify />} />
-          <Route path="/projects/glownest" element={<GlowNest />} />
-          <Route path="/projects/lifelane" element={<LifeLane />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
-  </StrictMode>
+    <ContentProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route element={<GlobalEffects />}>
+            <Route path="/" element={<App />} />
+            <Route path="/projects/:slug" element={<ProjectPage />} />
+            <Route path="*" element={<NotFound />} />
+          </Route>
+          <Route
+            path="/admin"
+            element={
+              <Suspense fallback={<div className="page-loader" />}>
+                <AdminPage />
+              </Suspense>
+            }
+          />
+        </Routes>
+      </BrowserRouter>
+    </ContentProvider>
+  </StrictMode>,
 );
